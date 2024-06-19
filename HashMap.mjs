@@ -60,14 +60,25 @@ export class HashMap {
   keys() {
     // return an array containing all the keys inside the hash map
     const arr = [];
-    let times = 0;
     this.buckets.forEach((bucket) => {
       const node = bucket.head;
       if (node !== null) {
         arr.push(node.key);
-        times++;
       }
     });
+    return arr;
+  }
+
+  values() {
+    // returns an array containing all the values
+    const arr = [];
+    this.buckets.forEach((bucket) => {
+      const node = bucket.head;
+      if (node !== null) {
+        arr.push(node.value);
+      }
+    });
+
     return arr;
   }
 }
@@ -79,4 +90,5 @@ map.remove("hello");
 console.log(map.length());
 console.log(map.get("hello"));
 console.log(map.keys());
+console.log(map.values());
 // console.log(map.buckets[2]);
