@@ -17,13 +17,32 @@ export class LinkedList {
     this.size++;
   }
 
-  /**Prints the linked list in the following format:
-   * ( value ) -> ( value ) -> ( value ) -> null*/
+  prepend(key, value) {
+    const newNode = new Node(key, value);
+    if (!this.head) {
+      return this.append(key, value);
+    }
+
+    newNode.nextNode = this.head;
+    this.head = newNode;
+    this.size++;
+  }
+
+  get(key) {
+    let curr = this.head;
+    while (curr !== null) {
+      if (curr.key === key) {
+        return curr.value;
+      }
+      curr = curr.next;
+    }
+
+    return null;
+  }
+
   toString() {
     let string = "";
     let currNode = this.head;
-    console.log("currNode:", currNode.key); // hello
-    console.log("currNode:", currNode.value); // world
     while (currNode !== null) {
       string += `( ${currNode.key}:${currNode.value} ) -> `;
       currNode = currNode.next;

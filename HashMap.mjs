@@ -19,25 +19,21 @@ export class HashMap {
 
   set(key, value) {
     const hashCode = this.#hash(key);
-    // i think i should use linked list here?
-    this.buckets[hashCode].append(key, value); // this a linked list
+    const bucket = this.buckets[hashCode];
+
+    bucket.prepend(key, value);
   }
 
   get(key) {
     const hashCode = this.#hash(key);
-    const value = this.bucket[hashCode];
-    if (typeof value === "undefined") {
-      return null;
-    }
+    const bucket = this.buckets[hashCode];
 
-    return value;
+    return bucket.get(key);
   }
 }
 const map = new HashMap();
 map.set("hello", "world");
 map.set("hello", "world223");
 map.set("zz", "zz2323");
-// console.log(map.get("hello"));
-// console.log(map.get("helloㅌ"));
-console.log(map);
-console.log(map.buckets[2].toString());
+
+console.log(map.get("zz"));
