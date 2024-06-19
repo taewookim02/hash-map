@@ -30,6 +30,13 @@ export class HashMap {
 
     return bucket.get(key);
   }
+
+  has(key) {
+    const hashCode = this.#hash(key);
+    const bucket = this.buckets[hashCode];
+
+    return bucket.has(key);
+  }
 }
 const map = new HashMap();
 map.set("hello", "world");
@@ -37,3 +44,5 @@ map.set("hello", "world223");
 map.set("zz", "zz2323");
 
 console.log(map.get("zz"));
+console.log(map.has("zzs"));
+console.log(map.has("hello"));

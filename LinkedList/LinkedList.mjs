@@ -40,6 +40,16 @@ export class LinkedList {
     return null;
   }
 
+  has(key) {
+    let curr = this.head;
+    while (curr !== null) {
+      if (curr.key === key) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   toString() {
     let string = "";
     let currNode = this.head;
