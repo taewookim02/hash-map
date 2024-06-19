@@ -30,7 +30,32 @@ export class HashSet {
     const bucket = this.buckets[hashCode];
 
     // returns the key
-    return bucket.head.key;
+    return bucket.head?.key ? bucket.head.key : null;
+  }
+
+  has(key) {
+    // returns true if key in set
+    if (this.get(key)) {
+      return true;
+    }
+    return false;
+  }
+
+  remove(key) {
+    if (!this.get(key)) {
+      return false;
+    }
+
+    const hashCode = this.#hash(key);
+    const bucket = this.buckets[hashCode];
+
+    bucket.remove(key);
+    this.setLength++;
+    return true;
+  }
+
+  length() {
+    const hashCode = this.#hash(key);
   }
 }
 
@@ -40,3 +65,7 @@ set.set("hello2");
 set.set("hello2");
 set.set("hello");
 set.get("hello2");
+console.log(set.has("af"));
+console.log(set.remove("hello"));
+console.log(set.remove("hello"));
+console.log(set);
