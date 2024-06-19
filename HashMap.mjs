@@ -81,7 +81,24 @@ export class HashMap {
 
     return arr;
   }
+
+  entries() {
+    // returns an array that contains each key, value pair
+    const arr = [];
+    this.buckets.forEach((bucket) => {
+      const node = bucket.head;
+      if (node !== null) {
+        const entry = [];
+        entry.push(node.key);
+        entry.push(node.value);
+        arr.push(entry);
+      }
+    });
+
+    return arr;
+  }
 }
+
 const map = new HashMap();
 map.set("hello", "world");
 map.set("hello", "world223");
@@ -91,4 +108,5 @@ console.log(map.length());
 console.log(map.get("hello"));
 console.log(map.keys());
 console.log(map.values());
+console.log(map.entries());
 // console.log(map.buckets[2]);
