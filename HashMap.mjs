@@ -56,13 +56,27 @@ export class HashMap {
     this.buckets = Array.from({ length: this.size }, () => new LinkedList());
     this.mapLength = 0;
   }
+
+  keys() {
+    // return an array containing all the keys inside the hash map
+    const arr = [];
+    let times = 0;
+    this.buckets.forEach((bucket) => {
+      const node = bucket.head;
+      if (node !== null) {
+        arr.push(node.key);
+        times++;
+      }
+    });
+    return arr;
+  }
 }
 const map = new HashMap();
 map.set("hello", "world");
 map.set("hello", "world223");
 map.set("zz", "zz2323");
 map.remove("hello");
-map.clear();
 console.log(map.length());
 console.log(map.get("hello"));
+console.log(map.keys());
 // console.log(map.buckets[2]);
