@@ -37,12 +37,19 @@ export class HashMap {
 
     return bucket.has(key);
   }
+
+  remove(key) {
+    const hashCode = this.#hash(key);
+    const bucket = this.buckets[hashCode];
+
+    return bucket.remove(key);
+  }
 }
 const map = new HashMap();
 map.set("hello", "world");
 map.set("hello", "world223");
 map.set("zz", "zz2323");
+map.remove("hello");
 
-console.log(map.get("zz"));
-console.log(map.has("zzs"));
-console.log(map.has("hello"));
+console.log(map.get("hello"));
+// console.log(map.buckets[2]);

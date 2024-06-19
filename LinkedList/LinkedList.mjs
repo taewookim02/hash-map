@@ -23,7 +23,7 @@ export class LinkedList {
       return this.append(key, value);
     }
 
-    newNode.nextNode = this.head;
+    newNode.next = this.head;
     this.head = newNode;
     this.size++;
   }
@@ -48,6 +48,20 @@ export class LinkedList {
       }
     }
     return false;
+  }
+
+  remove(key) {
+    let curr = this.head;
+    if (curr.key === key) {
+      // remove curr
+      this.head = curr.next;
+    }
+    if (curr === this.tail) {
+      // if there was only 1 node in the list
+      this.tail = curr.next;
+    }
+
+    this.size--;
   }
 
   toString() {
