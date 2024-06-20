@@ -1,7 +1,7 @@
 import { LinkedList } from "./LinkedList/LinkedList.mjs";
 
 export class HashSet {
-  LOAD_FACTOR = "";
+  LOAD_FACTOR = 0.75;
 
   constructor(size = 16) {
     this.size = size;
@@ -21,10 +21,14 @@ export class HashSet {
   }
 
   set(key) {
+    if (this.setLength / this.size >= this.LOAD_FACTOR) {
+      this.#resize();
+    }
     const hashCode = this.#hash(key);
     const bucket = this.buckets[hashCode];
 
     bucket.append(key, null);
+    this.setLength++;
   }
 
   get(key) {
@@ -52,8 +56,36 @@ export class HashSet {
     const bucket = this.buckets[hashCode];
 
     bucket.remove(key);
-    this.setLength++;
+    this.setLength--;
     return true;
+  }
+
+  #resize() {
+    const newSize = Math.round(this.size * 2);
+    const newBuckets = Array.from({ length: newSize }, () => new LinkedList());
+
+    this.buckets.forEach((bucket) => {
+      let current = bucket.head;
+      while (current) {
+        const hashCode = this.#hashWithSize(current.key, newSize);
+        newBuckets[hashCode].append(current.key, null);
+        current = current.next;
+      }
+    });
+
+    this.size = newSize;
+    this.buckets = newBuckets;
+  }
+
+  #hashWithSize(key, size) {
+    let hashCode = 0;
+
+    const primeNumber = 31;
+    for (let i = 0; i < key.length; i++) {
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % size;
+    }
+
+    return hashCode;
   }
 
   length() {
@@ -62,6 +94,7 @@ export class HashSet {
 
   clear() {
     this.buckets = Array.from({ length: this.size }, () => new LinkedList());
+    this.setLength = 0;
   }
 
   keys() {
@@ -80,7 +113,17 @@ const set = new HashSet();
 set.set("hello");
 set.set("hello2");
 set.set("hello2");
-set.set("hello");
-set.get("hello2");
+set.set("12");
+set.set("as");
+set.set("fdf");
+set.set("sd");
+set.set("hegllo2");
+set.set("hello2");
+set.set("as");
+set.set("aszx");
+set.set("qwe");
+set.set("helzxcvlo");
+set.get("zxcv");
+set.remove("bb");
 
 console.log(set);

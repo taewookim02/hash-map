@@ -1,6 +1,8 @@
 import { LinkedList } from "./LinkedList/LinkedList.mjs";
 
 export class HashMap {
+  LOAD_FACTOR = 0.75;
+
   constructor(size = 16) {
     this.size = size;
     this.mapLength = 0;
@@ -18,6 +20,10 @@ export class HashMap {
   }
 
   set(key, value) {
+    if (this.mapLength / this.size >= this.LOAD_FACTOR) {
+      this.#resize();
+    }
+
     const hashCode = this.#hash(key);
     const bucket = this.buckets[hashCode];
 
@@ -96,11 +102,50 @@ export class HashMap {
 
     return arr;
   }
+
+  #resize() {
+    const newSize = Math.round(this.size * 2);
+    const newBuckets = Array.from({ length: newSize }, () => new LinkedList());
+
+    this.buckets.forEach((bucket) => {
+      let current = bucket.head;
+      while (current) {
+        const hashCode = this.#hashWithSize(current.key, newSize);
+        newBuckets[hashCode].append(current.key, current.value);
+        current = current.next;
+      }
+    });
+
+    this.size = newSize;
+    this.buckets = newBuckets;
+  }
+
+  #hashWithSize(key, size) {
+    let hashCode = 0;
+
+    const primeNumber = 31;
+    for (let i = 0; i < key.length; i++) {
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % size;
+    }
+
+    return hashCode;
+  }
 }
 
 const map = new HashMap();
 map.set("hello", "world");
 map.set("hello", "world223");
+map.set("hello", "world223");
+map.set("hel123lo", "worasdfld223");
+map.set("hasdello", "world2adsf23");
+map.set("hqweello", "world223");
+map.set("heasdfllo", "worldadsf223");
+map.set("hegdaslasdlo", "worasdfld223");
+map.set("hello", "worldxczv223");
+map.set("hevczxr321llo", "wo123rld223");
+map.set("hello", "worldasdf223");
+map.set("heldsalo", "worldsd223");
+map.set("helasdflo", "worlxczvd223");
 map.set("zz", "zz2323");
 map.remove("hello");
 console.log(map.length());
@@ -109,3 +154,5 @@ console.log(map.keys());
 console.log(map.values());
 console.log(map.entries());
 // console.log(map.buckets[2]);
+
+console.log(map);
