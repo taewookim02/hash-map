@@ -1,6 +1,8 @@
 import { LinkedList } from "./LinkedList/LinkedList.mjs";
 
 export class HashSet {
+  LOAD_FACTOR = "";
+
   constructor(size = 16) {
     this.size = size;
     this.setLength = 0;
@@ -57,6 +59,21 @@ export class HashSet {
   length() {
     const hashCode = this.#hash(key);
   }
+
+  clear() {
+    this.buckets = Array.from({ length: this.size }, () => new LinkedList());
+  }
+
+  keys() {
+    // returns an array containing all the keys inside the hash set
+    const arr = [];
+    this.buckets.forEach((bucket) => {
+      if (bucket.head !== null) {
+        arr.push(bucket.head.key);
+      }
+    });
+    return arr;
+  }
 }
 
 const set = new HashSet();
@@ -65,7 +82,5 @@ set.set("hello2");
 set.set("hello2");
 set.set("hello");
 set.get("hello2");
-console.log(set.has("af"));
-console.log(set.remove("hello"));
-console.log(set.remove("hello"));
+
 console.log(set);
